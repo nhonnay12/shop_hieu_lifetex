@@ -4,11 +4,11 @@ import { IoMdAddCircleOutline } from 'react-icons/io';
 import classNames from 'classnames/bind';
 import style from './AdminProduct.module.scss';
 import TableComponent from '../ComponentAdmin/TableComponent';
-import { Modal, Upload, Button as BTN, Input, Space, Select } from 'antd';
+import { Modal, Upload, Button as BTN, Input, Space } from 'antd';
 import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 
 import { useRef, useState } from 'react';
-import { getBase64, renderOptions } from '~/ultil';
+import { getBase64 } from '~/ultil';
 import { useMutationHooks } from '~/hooks/useMutationHook';
 import * as ProductService from '~/service/ProductService';
 import { useEffect } from 'react';
@@ -37,7 +37,7 @@ function AdminProduct() {
         discount: '',
     });
     const [stateProduct, setStateProduct] = useState(initial());
-     const [page, setPage] = useState(1);
+    const [page, setPage] = useState(1);
     const [limit] = useState(10);
 
     //thêm dữ liệu vào Product bằng react query
@@ -149,7 +149,7 @@ function AdminProduct() {
     };
     const queryProduct = useQuery(['products'], getAllProduct);
 
-    const { isLoading: isLoadingProduct, data: products } = queryProduct;
+    const { isLoading: isLoadingProduct, data: productsRaw } = queryProduct;
 
     const renderAction = () => {
         return (
@@ -478,12 +478,17 @@ function AdminProduct() {
             render: renderAction,
         },
     ];
-    const dataTable = products
-        ? products.map((product) => ({
-              ...product,
-              key: product._id,
-          }))
+
+    // Chuẩn hóa dữ liệu để đảm bảo products luôn là một mảng
+    const products = Array.isArray(productsRaw)
+        ? productsRaw
+        : Array.isArray(productsRaw?.data)
+        ? productsRaw.data
+        : Array.isArray(productsRaw?.stories)
+        ? productsRaw.stories
         : [];
+
+    const dataTable = products.map((product) => ({ ...product, key: product._id }));
     return (
         <div className={cx('wrapper')}>
             <div>Quản lý người dùng</div>
