@@ -43,7 +43,7 @@ function AdminInventory() {
         ? productsRaw.stories
         : [];
 
-    const dataTable = productsArray.map((product) => ({
+    const dataTable = (productsArray || []).map((product) => ({
         ...product,
         key: product._id ?? product.id ?? Math.random().toString(36).slice(2),
     }));
