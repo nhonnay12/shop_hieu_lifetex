@@ -1,0 +1,58 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 0;
+}
+.form-login {
+    width: 500px;
+    padding: 20px 40px;
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.4);
+}
+.title {
+    display: flex;
+    justify-content: space-around;
+}
+.title-login {
+    cursor: pointer;
+}
+
+.form-group {
+}
+.form-input {
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+}
+.form-label {
+}
+.form-control {
+}
+.form-group {
+    margin: 20px 0;
+    position: relative;
+}
+.form-label {
+}
+
+.form-control {
+    height: 100%;
+    width: 100%;
+    padding: 0 10px;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+}
+.btn-login {
+    margin: 10px auto;
+}
+.btn-fb {
+    margin: 10px auto;
+}
+.eyes {
+    position: absolute;
+    right: 8px;
+    top: 27px;
+    z-index: 1;
+    font-size: 1.8rem;
+}

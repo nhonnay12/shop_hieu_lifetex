@@ -1,0 +1,41 @@
+.wrapper {
+    display: flex;
+    margin-top: 10px;
+    border-bottom: 1px solid transparent;
+    gap: 20px;
+    cursor: pointer;
+    padding: 10px 0;
+}
+
+.wrapper:hover {
+    border-color: #cec9cc;
+    border-radius: 5px;
+    box-shadow: #cec9cc 0px 0px 5px;
+    transition: all 0.3s;
+}
+
+.produce {
+    width: 60px;
+    height: 50px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+.info {
+}
+.name {
+    font-weight: 500;
+}
+.price {
+    margin-top: 20px;
+}
+.current-price {
+    font-size: 1.4rem;
+    color: var(--current-price-color);
+    font-weight: 400;
+}
+.old-price {
+    color: var(--old-price-color);
+    font-size: 1rem;
+    text-decoration: line-through;
+    margin-left: 10px;
+}

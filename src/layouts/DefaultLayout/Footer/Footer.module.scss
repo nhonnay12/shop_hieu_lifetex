@@ -1,0 +1,185 @@
+.wrapper {
+    width: 1230px;
+
+    display: flex;
+    justify-content: space-between;
+
+    font-family: nunito-sans, sans-serif, Helvetica, Arial;
+}
+.wrapper1 {
+    width: 1230px;
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 0 0 25px;
+    border-radius: 8px 8px 0 0;
+    -webkit-border-radius: 8px 8px 0 0;
+    -moz-border-radius: 8px 8px 0 0;
+    -ms-border-radius: 8px 8px 0 0;
+    -o-border-radius: 8px 8px 0 0;
+}
+.inner {
+    width: 33.3333%;
+    border-right: 1px solid #cecece;
+}
+.logo {
+    display: block;
+    width: 300px;
+    padding: 10px 15px;
+    margin-bottom: 8px;
+}
+.wapper-right {
+    width: 66.66666%;
+}
+.inner_map {
+    line-height: 1.428571429;
+    font-size: 13px;
+    padding: 0 15px;
+    color: #333333;
+}
+.inner_node {
+    line-height: 1.428571429;
+    font-size: 13px;
+    padding: 10px 15px 0;
+    color: #333333;
+}
+.logo2 {
+    margin: 15px 0;
+    padding: 0 15px;
+}
+.logo2 img {
+    display: block;
+    width: 100px;
+    height: 30px;
+}
+.logo_nhan {
+    padding: 0 15px 0 10px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.logo_nhan img {
+    display: block;
+    width: 40px;
+    height: 40px;
+}
+
+.right {
+    display: flex;
+    padding: 0 15px;
+}
+.gg,
+.gg2 {
+    display: block;
+    width: 110px;
+    height: 36px;
+}
+.gg2 {
+    margin-left: 20px;
+}
+.wapper-right {
+    padding-left: 15px;
+}
+.right_top {
+    display: flex;
+    justify-content: space-between;
+}
+.call h4 {
+    text-transform: uppercase;
+    font-size: 16px;
+    color: black;
+    font-weight: bold;
+    line-height: 39px;
+    padding-left: 15px;
+}
+.call {
+    margin-top: 10px;
+}
+.item_top {
+    width: 33.33333%;
+    padding: 0 15px;
+}
+.item_ul {
+    list-style: none;
+}
+.item_top h4 {
+    text-transform: uppercase;
+    font-size: 16px;
+    color: black;
+    font-weight: bold;
+    line-height: 39px;
+}
+.call_list {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+.call_item {
+    display: flex;
+    align-items: center;
+    width: 33.33333%;
+    padding: 0 15px;
+}
+.call_item svg {
+    font-size: 20px;
+    padding-right: 5px;
+}
+.hehe svg {
+    font-size: 25px;
+}
+.item_li {
+    line-height: 35px;
+
+    background: url(https://cdn0.fahasa.com/skin/frontend/ma_vanese/ma_vanesa2/images/icon-footer.png) no-repeat 0 9px;
+    color: black;
+    text-decoration: none;
+    transition: all 300ms ease-in 0s;
+    font-size: 13px;
+    font-weight: 400;
+}
+.item_li:hover {
+    background-position: 0px -27px;
+    padding-left: 16px;
+    color: #ea7696;
+}
+.hidden {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 25px;
+    height: 80px;
+    margin-right: 16px;
+    margin-top: 30px;
+    align-items: center;
+}
+.footer-image-container img {
+    display: flex;
+    margin: 0 auto;
+    max-width: 120px;
+}
+.t2 {
+    height: 50px;
+}
+.t3 {
+    height: 44px;
+}
+.t4 {
+    height: 65px;
+}
+
+.bim {
+    color: #adadad;
+    text-align: center;
+    margin-top: 50px;
+    font-size: 13px;
+    font-weight: 400;
+}
+.banner_ft {
+    width: 100%;
+    height: 76px;
+    border-radius: 8px 8px 0 0;
+    -webkit-border-radius: 8px 8px 0 0;
+    -moz-border-radius: 8px 8px 0 0;
+    -ms-border-radius: 8px 8px 0 0;
+    -o-border-radius: 8px 8px 0 0;
+    margin-bottom: 40px;
+    background: #9fa7ab;
+}

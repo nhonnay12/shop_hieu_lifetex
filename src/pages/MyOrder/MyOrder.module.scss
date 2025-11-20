@@ -1,0 +1,79 @@
+.inner {
+    background-color: #fff;
+    padding: 20px;
+    margin-top: 20px;
+}
+.order {
+}
+.order-way {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eae7e7;
+}
+.order-option-title {
+    font-size: 1.8rem;
+}
+.order-delivery {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+.order-pay {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+.info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px 10px;
+}
+.product {
+    display: flex;
+    padding-top: 10px;
+}
+.img {
+    width: auto;
+    max-height: 119px;
+    object-fit: contain;
+}
+.price {
+    font-size: 1.6rem;
+    color: var(--current-price-color);
+    font-weight: 600;
+}
+.option-price {
+}
+.price-old {
+    font-size: 1.4rem;
+    text-decoration: line-through;
+    margin-left: 20px;
+    color: var(--old-price-color);
+}
+.total {
+    margin-top: 20px;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+.total-num {
+    color: #f39801;
+}
+.order-option {
+    display: flex;
+    justify-content: center;
+}
+.btn-huy {
+    min-width: 25px;
+    font-size: 1.2rem;
+    padding: 7px;
+}
+.btn-detail {
+    min-width: 30px;
+    padding: 0 14px;
+    margin-left: 20px;
+    font-size: 1.2rem;
+}
+.order-delivery-text {
+    color: #f39801;
+}
+.order-pay-text {
+    color: #f39801;
+}

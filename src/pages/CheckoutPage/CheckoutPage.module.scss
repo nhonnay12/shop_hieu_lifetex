@@ -1,0 +1,120 @@
+.wrapper {
+    margin-top: 15px;
+    margin-bottom: 250px;
+}
+.info {
+    background-color: #fff;
+    padding: 10px 20px;
+}
+.title {
+    font-size: 1.8rem;
+    padding: 10px 0;
+    border-bottom: 1px solid #bcb9b9;
+}
+.delivery {
+    background-color: #fff;
+    margin-top: 20px;
+    padding: 10px 20px;
+}
+.delivery-title {
+    font-size: 2rem;
+    padding: 0 0 10px;
+    border-bottom: 1px solid #bcb9b9;
+}
+.delivery-way {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.method-buy {
+    background-color: #fff;
+    margin-top: 20px;
+    padding: 10px 20px;
+}
+.method-title {
+    font-size: 2rem;
+    padding: 0 0 10px;
+    border-bottom: 1px solid #bcb9b9;
+}
+.method-way {
+    display: flex;
+    flex-direction: column;
+}
+.buy-icon {
+    font-size: 2.4rem;
+    margin-right: 10px;
+    color: #a8f3c4;
+}
+.method-text {
+    display: flex;
+    margin-top: 5px;
+}
+.buy {
+    background-color: #fff;
+    margin-top: 20px;
+    position: fixed;
+    z-index: 1;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    box-shadow: 0px -4px 10px -4px rgba(0, 0, 0, 0.66);
+}
+.total-name {
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: flex-end;
+}
+.total-title {
+    font-size: 1.8rem;
+}
+.total-tt {
+    font-size: 1.8rem;
+    margin-left: 5px;
+}
+.total-sum {
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: flex-end;
+}
+.sum-title {
+    font-size: 1.6rem;
+}
+.sum-vat {
+    font-size: 1.6rem;
+    margin-left: 5px;
+}
+.into-sum {
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: flex-end;
+}
+.into-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+.into-money {
+    font-weight: 600;
+    font-size: 1.8rem;
+    color: #f39801;
+    margin-left: 5px;
+}
+.option {
+    padding-top: 10px;
+    border-top: 1px solid #bcb9b9;
+    display: flex;
+    justify-content: space-between;
+}
+.back-icon {
+    color: #bcb9b9;
+    font-size: 4rem;
+}
+.option-back {
+    display: flex;
+    align-items: center;
+}
+.buy-paypal {
+    color: #268bbd;
+    font-size: 2.4rem;
+    margin-right: 10px;
+}

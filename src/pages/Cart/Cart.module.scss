@@ -1,0 +1,326 @@
+.text-all {
+    margin-left: 20px;
+}
+.title-cart {
+    padding: 10px 10px;
+}
+.title {
+    font-size: 2.5rem;
+    font-weight: 400;
+}
+.title-count {
+    font-size: 1.6rem;
+    font-weight: 400;
+}
+.step {
+    background-color: #fff;
+    padding: 10px 20px;
+    margin-bottom: 15px;
+}
+.check-all {
+    display: flex;
+    background-color: #fff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    align-items: center;
+}
+.container {
+    flex: 2;
+}
+.text-all {
+    flex-basis: 60%;
+    font-size: 1.6rem;
+    font-weight: 400;
+}
+.title-amount {
+    flex-basis: 17%;
+    font-size: 1.6rem;
+    font-weight: 400;
+}
+.title-buy {
+    flex-basis: 15%;
+    font-size: 1.6rem;
+    font-weight: 400;
+}
+.inner {
+    display: flex;
+    justify-content: space-between;
+}
+
+.content {
+    margin-top: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 0 20px;
+}
+.product-cart {
+    display: flex;
+    padding: 20px 0;
+    border-bottom: 1px solid #ededed;
+}
+.checkbox-all {
+}
+.product-img {
+    margin-left: 15px;
+    width: auto;
+    max-height: 119px;
+    object-fit: contain;
+}
+.product-info {
+    padding-left: 20px;
+    flex-basis: 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.option-price {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+.option {
+    align-items: center;
+    flex-basis: 50%;
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+.total-price {
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: #c92127;
+}
+.delete-cart {
+    color: #9fa7ab;
+    font-size: 2.5rem;
+}
+
+.product-name {
+}
+.price {
+    display: flex;
+    align-items: center;
+}
+.product-price {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #333;
+}
+.product-price-old {
+    font-size: 1.4rem;
+    color: #888888;
+    text-decoration: line-through;
+    margin-left: 20px;
+}
+
+.btn-less,
+.btn-more {
+    font-size: 2rem;
+    cursor: pointer;
+    margin: 7px;
+    color: #9fa7ab;
+}
+.input-amount {
+    padding-left: 6px;
+    border: none;
+}
+.amount-so {
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    width: 110px;
+    max-height: 40px;
+    border-radius: 8px;
+    justify-content: center;
+}
+
+.delete-cart-all {
+    color: #9fa7ab;
+    font-size: 2.5rem;
+    flex-basis: 6%;
+}
+
+//Tick ket
+.sale {
+    flex: 1;
+}
+.sale-inner {
+    background-color: #fff;
+    margin-left: 15px;
+    border-radius: 10px;
+    padding: 15px;
+}
+.title-sale {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #ededed;
+}
+.sale-text {
+    display: flex;
+    color: #2f80ed;
+    font-weight: 400;
+    align-items: center;
+    font-size: 1.8rem;
+}
+.sale-text-icon {
+    margin-right: 5px;
+    font-weight: 100;
+    font-size: 2.2rem;
+}
+.sale-more {
+    color: #2f80ed;
+    align-items: center;
+    font-weight: 400;
+    font-size: 1.6rem;
+}
+.ticket {
+    padding: 10px 0;
+    border-bottom: 1px solid #ededed;
+}
+.ticket-name {
+    display: flex;
+    justify-content: space-between;
+}
+.ticket-name-text {
+    font-weight: 600;
+    font-size: 1.8rem;
+}
+.ticket-description {
+    color: #2f80ed;
+    text-decoration: underline;
+}
+.ticket-wra {
+    margin-bottom: 15px;
+    color: #a29d9d;
+}
+.ticket-condition-need {
+}
+.ticket-condition {
+}
+.ticket-buy-more {
+    background-color: #2f80ed;
+    font-size: 1.5rem;
+    padding: 10px 12px;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+}
+.ticket-condition-text {
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.ticket-help {
+    color: #a29d9d;
+    display: flex;
+    align-items: center;
+    padding: 10px 0 0;
+}
+
+.ticket-help-icon {
+    font-size: 2rem;
+}
+.ticket-more {
+    background-color: #2f80ed33;
+    color: #2f80ed;
+    display: flex;
+    padding: 5px 10px;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+.ticket-more-icon {
+    font-size: 2rem;
+}
+
+.total {
+    background-color: #fff;
+    margin-left: 15px;
+    border-radius: 10px;
+    padding: 15px 25px 15px 15px;
+    margin-top: 15px;
+}
+.total-name {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+}
+.total-title {
+    font-size: 1.8rem;
+}
+.total-tt {
+    font-size: 1.8rem;
+}
+.total-sum {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0 20px;
+}
+.sum-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+.sum-vat {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--current-price-color);
+}
+.btn-buy {
+    width: 100%;
+    font-size: 1.8rem;
+}
+.total-help {
+    font-size: 1.3rem;
+    color: var(--current-price-color);
+    margin-top: 10px;
+}
+.address {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.address-text {
+    font-size: 1.6rem;
+}
+.address-tp {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-left: 10px;
+}
+.address-place {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+.address-change {
+    font-size: 1.4rem;
+    color: #2f80ed;
+    margin-left: 10px;
+    cursor: pointer;
+}
+.delivery-name {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 10px;
+}
+.delivery-title {
+    font-size: 1.8rem;
+}
+.delivery-tt {
+    font-size: 1.8rem;
+}
+.off-product {
+    color: #c92127;
+}
+.render-off {
+    position: absolute;
+    padding-top: 20px;
+    width: 200px;
+}
+.checkbox-all-width {
+    display: flex;
+    width: 31px;
+}

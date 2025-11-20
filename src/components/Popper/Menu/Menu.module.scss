@@ -1,0 +1,25 @@
+.list-menu {
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgb(0 0 0 / 12%) 0px 2px 12px;
+    width: 550px;
+    min-height: 300px;
+    max-height: 400px;
+    border-radius: 10px;
+    margin-top: 5px;
+}
+.item-menu {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 10px;
+}
+.item {
+    width: calc(100% / 4 - 20px);
+    margin: 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+.title {
+    padding: 10px 10px 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+}

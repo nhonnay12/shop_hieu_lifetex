@@ -1,0 +1,70 @@
+.wrapper {
+    width: 100%;
+    height: 68px;
+    display: flex;
+    justify-content: center;
+    background-color: #fff;
+}
+.inner {
+    height: 100%;
+    width: 1230px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+}
+
+.menu {
+    font-size: 4rem;
+    display: flex;
+    align-items: center;
+    color: #888888;
+    margin-left: 40px;
+}
+.menu-down {
+    font-size: 1.8rem;
+}
+//Search
+.action {
+    display: flex;
+}
+//Bell
+.btn-bell {
+    border: none;
+    background-color: #fff;
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.bell {
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+}
+.text-bell {
+    font-size: 1.4rem;
+}
+
+//Cart
+.cart {
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+    text-decoration: none;
+    align-items: center;
+}
+.btn-cart {
+    border: none;
+    background-color: #fff;
+    font-size: 2rem;
+    font-weight: 800;
+}
+.text-cart {
+    font-size: 1.4rem;
+    color: #000000;
+}
+
+//User

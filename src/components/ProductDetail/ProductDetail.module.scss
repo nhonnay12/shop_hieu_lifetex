@@ -1,0 +1,366 @@
+.wrapper {
+}
+.product-inner {
+    background-color: #fff;
+    padding-bottom: 20px;
+}
+.img-small {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 15px;
+}
+img.ant-image-img.img-product {
+    height: 70px;
+    width: 70px;
+    &:hover {
+        border: 1px solid red;
+    }
+}
+.ant-image-mask-info {
+    display: none;
+}
+.product {
+    display: flex;
+    padding: 10px;
+}
+.product-right {
+    display: flex;
+    margin-top: 16px;
+}
+.product-info {
+    flex: 1;
+    padding-left: 20px;
+}
+.name-product {
+    font-size: 2.4rem;
+    padding-top: 10px;
+    display: block;
+    font-weight: 700;
+}
+.company {
+    display: flex;
+    flex-direction: column;
+}
+.do-author-text {
+    font-weight: 700;
+}
+.company-home,
+.company-name,
+.do-type,
+.do {
+    padding: 10px 0;
+}
+
+.company-home-text {
+    color: #2489f4;
+    font-weight: 700;
+}
+.do {
+    display: flex;
+    flex-direction: column;
+    margin-left: 200px;
+}
+.do-author {
+}
+.do-type {
+}
+.price {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+.price-sale {
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: var(--current-price-color);
+    margin-right: 10px;
+}
+.price-current {
+    font-size: 1.4rem;
+    color: #333;
+    text-decoration: line-through;
+    margin-right: 10px;
+}
+.sale {
+    background-color: var(--current-price-color);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.4rem;
+    padding: 3px;
+    border-radius: 4px;
+}
+.star {
+    color: #ccc;
+    margin-top: 6px;
+}
+
+.delivery {
+    display: flex;
+    margin-top: 20px;
+}
+.time-delivery {
+}
+.delivery-info {
+    margin-left: 30px;
+}
+.place-delivery {
+}
+.expected-delivery {
+}
+.place-delivery-text {
+    font-weight: 700;
+}
+.place-delivery-change {
+    font-weight: 700;
+    color: #2489f4;
+}
+.ant-input-number.input-amount {
+    width: 60px;
+}
+.amount {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    gap: 20px;
+}
+.amount-text {
+    margin-right: 90px;
+}
+.amount-so {
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    width: 110px;
+    border-radius: 8px;
+    justify-content: center;
+}
+.btn-less,
+.btn-more {
+    font-size: 3rem;
+    cursor: pointer;
+}
+.input-amount {
+    padding-left: 15px;
+    border: none;
+    &.ant-input-number {
+        display: none !important;
+        .ant-input-number-handler-wrap {
+            display: none !important;
+        }
+    }
+}
+.btn-icon-cart {
+    font-size: 2rem;
+}
+.btn-buy-cart {
+    margin-left: 20px;
+    min-width: 220px;
+}
+.btn-buy {
+    display: flex;
+}
+.title {
+    display: flex;
+    align-items: center;
+    font-size: 1.4rem;
+}
+.title-type {
+    color: #f7941e;
+}
+.prd-list {
+    margin-top: 15px;
+}
+.prd-inner {
+    padding-bottom: 50px;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+    background-color: #fff;
+    margin-bottom: 15px;
+}
+.product-information,
+.product-review {
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+    background-color: #fff;
+    margin-bottom: 15px;
+    padding: 15px 15px 30px;
+}
+.information {
+    display: flex;
+    padding: 5px 0;
+}
+.information_left {
+    width: 260px;
+    color: #777;
+}
+.node {
+    padding-top: 10px;
+    font-size: 1.4rem;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+}
+.red {
+    color: #c92127;
+}
+.aa {
+    margin-top: 10px;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+}
+.textarea-product {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+    padding: 10px;
+    margin: 10px 0;
+    outline: none;
+    resize: none;
+}
+.product-information {
+    margin-top: 15px;
+}
+
+.textarea-product {
+    line-height: 3rem;
+}
+.product-review-title {
+    margin-bottom: 20px;
+}
+.product-review {
+}
+.comment {
+}
+.comment-name-date {
+    width: 200px;
+    margin-top: 11px;
+}
+.comment-name {
+    font-weight: 600;
+}
+.comment-date {
+    color: #7a7e7f;
+}
+.comment-text {
+}
+.list-comment {
+    display: flex;
+    padding: 10px;
+}
+.add-comment {
+    margin-bottom: 20px;
+}
+.title-comment {
+    font-size: 1.6rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 15px;
+}
+.rate-star {
+    text-align: center;
+}
+.btn-comment {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.close-model {
+    cursor: pointer;
+    font-size: 1.6rem;
+    color: #ccc;
+    font-weight: 600;
+    margin-right: 10px;
+}
+.rate-comment {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 15px;
+}
+.rate-text {
+    font-size: 5rem;
+    font-weight: 600;
+}
+.rate-text-5 {
+    font-size: 2.5rem;
+    font-weight: 600;
+}
+.comment-rate {
+    display: flex;
+    flex-direction: column;
+}
+.btn-write {
+    margin-left: 200px;
+    min-width: 344px;
+}
+.more-des {
+    min-width: 200px;
+    margin-left: 0;
+}
+.more-des-op {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+.description-text {
+    height: 66px;
+    overflow: hidden;
+}
+.description-less {
+    height: 100%;
+}
+.rate-text-total {
+    color: #7a7e7f;
+}
+.list-pagination {
+    display: flex;
+    list-style: none;
+    align-items: center;
+    justify-content: center;
+}
+.pagination {
+    text-align: center;
+    font-size: 1.8rem;
+    padding: 5px 15px;
+}
+.active {
+    background-color: #c92127;
+    color: #fff;
+    border-radius: 5px;
+}
+.custom-container {
+    margin-top: 2rem; /* mt-8 tương đương với 2rem */
+    background-color: #56c748; /* bg-lime-200 là màu xanh lá sáng */
+    width: 12rem; /* w-48 tương đương với 12rem */
+    padding: 0.5rem; /* p-2 tương đương với 0.5rem */
+    border-radius: 0.5rem; /* rounded-lg tương đương với 0.5rem */
+    text-align: center;
+}
+
+.custom-container:hover {
+    background-color: #45a049; /* Màu nền khi hover */
+}
+.delete-comment {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+}
+.delete-comment:hover {
+    color: red;
+    background-color: #2489f4;
+    border-radius: 100%;
+}

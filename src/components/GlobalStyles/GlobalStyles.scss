@@ -1,0 +1,32 @@
+ @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@200;300;400;500;600;700&display=swap');
+
+:root {
+    --text-color: #333333;
+    --current-price-color: #c92127;
+    --old-price-color: #888888;
+}
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 1.6rem;
+    line-height: 1.5;
+    text-rendering: optimizeSpeed;
+    overflow-y: overlay;
+}
+
+a[href] {
+    text-decoration: none;
+    color: #333333;
+}
+img {
+    display: block;
+}

@@ -1,0 +1,107 @@
+.wrapper {
+    background-color: #fff;
+    margin-top: 20px;
+    padding: 20px;
+}
+.Title {
+    font-size: 2rem;
+    font-weight: 600;
+}
+.info {
+}
+.info-name {
+    font-size: 1.4rem;
+}
+.info-name-text {
+    font-weight: 600;
+}
+.info-place {
+}
+.info-place-text {
+    font-weight: 600;
+}
+.info-phone {
+}
+.info-phone-num {
+    font-weight: 600;
+}
+.delivery {
+}
+.delivery-way {
+}
+.delivery-name {
+    font-weight: 600;
+}
+.delivery-price {
+}
+.pay {
+}
+.pay-title {
+}
+.pay-way {
+    font-weight: 600;
+}
+.pay-was {
+    font-weight: 600;
+    color: var(--current-price-color);
+}
+.product {
+    display: flex;
+    margin-top: 20px;
+}
+.product-img {
+    max-height: 119px;
+}
+.product-name-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px 10px;
+}
+.product-name {
+    font-size: 1.5rem;
+}
+.product-price {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--current-price-color);
+}
+.product-price-old {
+    margin-left: 20px;
+    text-decoration: line-through;
+    color: #c4bebe;
+}
+.product-info {
+}
+.discount-text {
+    color: #f7941e;
+    font-weight: 600;
+}
+.product-info-discount {
+}
+.product-info-price {
+}
+.product-info-price-text {
+    color: var(--current-price-color);
+}
+.product-info-amount {
+}
+.product-info-delivery {
+}
+.product-info-total {
+    color: var(--current-price-color);
+    font-weight: 600;
+    font-size: 2rem;
+}
+.info-user-pay {
+    border-bottom: 1px solid #d7d5d5;
+    padding-bottom: 10px;
+}
+.product-info-amount-text {
+    font-weight: 600;
+}
+.total-info {
+    margin-top: 10px;
+    border-top: 1px solid #d7d5d5;
+    padding-top: 20x;
+}
