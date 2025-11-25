@@ -2,8 +2,8 @@
 import { useQuery } from 'react-query';
 import { useRef, useState, useEffect, useMemo } from 'react';
 import Highlighter from 'react-highlight-words';
-import { SearchOutlined, PlusOutlined, MinusOutlined } from '@ant-design/icons';
-import { Button as BTN, Input, Space, Modal, InputNumber, Form, Typography } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
+import { Button as BTN, Input, Space, Modal, InputNumber, Form, Typography, Tag } from 'antd';
 
 import * as ProductService from '~/service/ProductService';
 import TableComponent from '../ComponentAdmin/TableComponent';
@@ -115,13 +115,13 @@ function AdminInventory() {
             ),
     });
 
-    const openModal = (type, record) => {
-        setModalType(type);
-        setSelectedProduct(record);
-        setIsModalOpen(true);
-        setQuantity(1); // Reset số lượng về 1 mỗi khi mở modal
-        form.setFieldsValue({ quantity: 1 });
-    };
+    // const openModal = (type, record) => {
+    //     setModalType(type);
+    //     setSelectedProduct(record);
+    //     setIsModalOpen(true);
+    //     setQuantity(1); // Reset số lượng về 1 mỗi khi mở modal
+    //     form.setFieldsValue({ quantity: 1 });
+    // };
 
     const openBulkModal = (type) => {
         setModalType(type);
@@ -183,9 +183,40 @@ function AdminInventory() {
             ellipsis: true,
         },
         { title: 'Giá', dataIndex: 'price', sorter: (a, b) => (a.price || 0) - (b.price || 0), render: (price) => convertPrice(price) },
-        { title: 'Số lượng ban đầu', dataIndex: 'initialQuantity', sorter: (a, b) => (a.initialQuantity || 0) - (b.initialQuantity || 0) },
+        // { title: 'Số lượng ban đầu', dataIndex: 'initialQuantity', sorter: (a, b) => (a.initialQuantity || 0) - (b.initialQuantity || 0) },
         { title: 'Số lượng tồn kho', dataIndex: 'countInStock', sorter: (a, b) => (a.countInStock || 0) - (b.countInStock || 0) },
         { title: 'Đã bán', dataIndex: 'sold', sorter: (a, b) => (a.sold || 0) - (b.sold || 0) },
+        {
+            title: 'Trạng thái',
+            dataIndex: 'countInStock',
+            sorter: (a, b) => (a.countInStock || 0) - (b.countInStock || 0),
+            render: (countInStock) => {
+                let color;
+                let text;
+                if (countInStock === 0) {
+                    color = 'red';
+                    text = 'Hết hàng';
+                } else if (countInStock > 0 && countInStock <= 5) {
+                    color = 'orange';
+                    text = 'Sắp hết';
+                } else {
+                    color = 'green';
+                    text = 'Còn hàng';
+                }
+                return <Tag color={color}>{text}</Tag>;
+            },
+            filters: [
+                { text: 'Còn hàng', value: 'in_stock' },
+                { text: 'Sắp hết', value: 'low_stock' },
+                { text: 'Hết hàng', value: 'out_of_stock' },
+            ],
+            onFilter: (value, record) => {
+                if (value === 'out_of_stock') return record.countInStock === 0;
+                if (value === 'low_stock') return record.countInStock > 0 && record.countInStock <= 10;
+                if (value === 'in_stock') return record.countInStock > 10;
+                return true;
+            },
+        },
         // {
         //     title: 'Nhập kho',
         //     key: 'stock-in',

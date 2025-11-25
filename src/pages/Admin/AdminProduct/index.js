@@ -34,6 +34,7 @@ function AdminProduct() {
         sold: '',
         pricesale: '',
         rating: '',
+        countInStock: '',
         discount: '',
     });
     const [stateProduct, setStateProduct] = useState(initial());
@@ -42,10 +43,11 @@ function AdminProduct() {
 
     //thêm dữ liệu vào Product bằng react query
     const mutation = useMutationHooks((data) => {
-        const { name, image, type, author, sold, price, pricesale, content, rating, age, description, discount } = data;
+        const { name, image, type, author, sold, price, pricesale, content, rating, age, description, discount, countInStock } = data;
         const res = ProductService.createProduct({
             name,
             image,
+            countInStock,
             type,
             author,
             sold,
@@ -88,6 +90,7 @@ function AdminProduct() {
             pricesale: '',
             rating: '',
             description: '',
+            countInStock: '',
             discount: '',
         });
     };
@@ -103,6 +106,7 @@ function AdminProduct() {
             rating: stateProduct.rating,
             age: stateProduct.age,
             description: stateProduct.description,
+            countInStock: stateProduct.countInStock,
             discount: stateProduct.discount,
             content: stateProduct.content,
         };
@@ -198,6 +202,7 @@ function AdminProduct() {
                 pricesale: res?.story?.pricesale,
                 rating: res?.story?.rating,
                 description: res?.story?.description,
+                countInStock: res?.story?.countInStock,
                 age: res?.story?.age,
                 discount: res?.story?.discount,
                 content: res?.story?.content,
@@ -234,6 +239,7 @@ function AdminProduct() {
             pricesale: '',
             rating: '',
             description: '',
+            countInStock: '',
             discount: '',
         });
     };
@@ -622,6 +628,22 @@ function AdminProduct() {
                         </div>
 
                         <div className={cx('form-group')}>
+                            <label htmlFor="countInStock" className={cx('form-label')}>
+                                Số lượng tồn kho
+                            </label>
+                            <div className={cx('form-input')}>
+                                <input
+                                    value={stateProduct.countInStock}
+                                    onChange={handleOnChange}
+                                    name="countInStock"
+                                    type="number"
+                                    placeholder="Nhập số lượng tồn kho"
+                                    className={cx('form-control')}
+                                    id="countInStock"
+                                />
+                            </div>
+                        </div>
+                        <div className={cx('form-group')}>
                             <label htmlFor="rating" className={cx('form-label')}>
                                 Đánh giá
                             </label>
@@ -813,6 +835,23 @@ function AdminProduct() {
                                     placeholder="Nhập số tuổi"
                                     className={cx('form-control')}
                                     id="age"
+                                />
+                            </div>
+                        </div>
+
+                        <div className={cx('form-group')}>
+                            <label htmlFor="countInStock" className={cx('form-label')}>
+                                Số lượng tồn kho
+                            </label>
+                            <div className={cx('form-input')}>
+                                <input
+                                    value={stateProductDetail.countInStock}
+                                    onChange={handleOnChangeDetail}
+                                    name="countInStock"
+                                    type="number"
+                                    placeholder="Nhập số lượng tồn kho"
+                                    className={cx('form-control')}
+                                    id="countInStock"
                                 />
                             </div>
                         </div>
