@@ -324,3 +324,20 @@
     display: flex;
     width: 31px;
 }
+.stock-in {
+    color: green;
+    font-size: 1.4rem;
+    margin-top: 4px;
+}
+
+.stock-low {
+    color: orange;
+    font-size: 1.4rem;
+    margin-top: 4px;
+}
+
+.stock-out {
+    color: red;
+    font-size: 1.4rem;
+    margin-top: 4px;
+}

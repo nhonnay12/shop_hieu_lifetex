@@ -8,6 +8,9 @@ import { Button as BTN, Input, Space, Modal, InputNumber, Form, Typography, Tag 
 import * as ProductService from '~/service/ProductService';
 import TableComponent from '../ComponentAdmin/TableComponent';
 import { convertPrice } from '~/ultil';
+import { useMutationHooks } from '~/hooks/useMutationHook';
+import * as messages from '~/components/Message';
+import axios from 'axios';
 
 function AdminInventory() {
     const searchInput = useRef(null);
@@ -155,14 +158,40 @@ function AdminInventory() {
         form.resetFields();
     };
 
+    // --- MUTATION CHO BULK UPDATE ---
+    const mutationBulkUpdate = useMutationHooks(async (data) => {
+        const res = await axios.put(`http://localhost:5000/api/story/stories/bulk-update`, data);
+        return res.data;
+    });
+    const { isLoading: isLoadingBulkUpdate, isSuccess: isSuccessBulkUpdate, isError: isErrorBulkUpdate } = mutationBulkUpdate;
+
+    useEffect(() => {
+        if (isSuccessBulkUpdate) {
+            messages.success('Cập nhật kho hàng loạt thành công!');
+        } else if (isErrorBulkUpdate) {
+            messages.error('Cập nhật kho hàng loạt thất bại!');
+        }
+    }, [isSuccessBulkUpdate, isErrorBulkUpdate]);
+
     const handleBulkOk = () => {
         bulkForm
             .validateFields()
             .then((values) => {
-                console.log(`Thực hiện ${modalType === 'stock-in' ? 'nhập' : 'xuất'} kho hàng loạt:`, values.products);
-                // TODO: Gọi API để xử lý nghiệp vụ hàng loạt
-                setIsBulkModalOpen(false);
-                setSelectedRowKeys([]);
+                const payload = {
+                    stories: values.products.map((p) => ({
+                        id: p.key,
+                        // Nếu là xuất kho, chuyển số lượng thành số âm
+                        countInStock: modalType === 'stock-out' ? -p.quantity : p.quantity,
+                    })),
+                };
+
+                mutationBulkUpdate.mutate(payload, {
+                    onSuccess: () => {
+                        queryProduct.refetch(); // Tải lại danh sách sản phẩm
+                        setIsBulkModalOpen(false);
+                        setSelectedRowKeys([]);
+                    },
+                });
             })
             .catch((info) => {
                 console.log('Validate Failed:', info);
@@ -234,7 +263,7 @@ function AdminInventory() {
     const bulkModalTitle = modalType === 'stock-in' ? 'Nhập kho hàng loạt' : 'Xuất kho hàng loạt';
 
     return (
-        <div>
+        <div style={{ padding: '20px' }}>
             <h2>Quản lý kho</h2>
             <Space style={{ marginBottom: 16 }}>
                 <BTN type="primary" onClick={() => openBulkModal('stock-in')} disabled={!selectedRowKeys.length}>
@@ -244,7 +273,7 @@ function AdminInventory() {
                     Xuất kho hàng loạt
                 </BTN>
             </Space>
-            <TableComponent columns={columns} isLoading={isLoadingProducts} data={dataTable} rowSelection={rowSelection} />
+            <TableComponent columns={columns} isLoading={isLoadingProducts || isLoadingBulkUpdate} data={dataTable} rowSelection={rowSelection} />
             {/* Modal cho thao tác đơn lẻ */}
             <Modal title={modalTitle} open={isModalOpen} onOk={handleOk} onCancel={handleCancel} okText="Xác nhận" cancelText="Hủy">
                 {selectedProduct && (
