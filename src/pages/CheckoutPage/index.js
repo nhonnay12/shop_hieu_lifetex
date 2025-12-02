@@ -130,11 +130,9 @@ function CheckoutPage() {
     const { isLoading, isSuccess, isError, data } = mutationAddOrder;
     useEffect(() => {
         if (isSuccess && data?.status === 'OK') {
-            const arrayOrder = [];
-            order?.orderItemSelected.forEach((element) => {
-                arrayOrder.push(element.product);
-            });
-            dispatch(removeAllOrderProduct({ listChecked: arrayOrder }));
+            // Lấy danh sách ID của các sản phẩm đã đặt hàng thành công để xóa khỏi Redux
+            const listRemovedProductIds = order?.orderItemSelected?.map((item) => item.story);
+            dispatch(removeAllOrderProduct({ listRemovedProductIds }));
             messages.success('Mua hàng thành công');
             navigate('/ordersuccess', {
                 state: {

@@ -6,19 +6,19 @@ import { FaMinus, FaPlus } from 'react-icons/fa';
 import { MdDeleteForever, MdNavigateNext } from 'react-icons/md';
 import { TbTicket } from 'react-icons/tb';
 import { CiWarning } from 'react-icons/ci';
-import { decreaseAmount, increaseAmount, removeAllOrderProduct, removeOrderProduct, selectedOrder } from '~/redux/slides/orderSlide';
+import { decreaseAmount, increaseAmount, removeAllOrderProduct, removeOrderProduct, selectedOrder } from '../../redux/slides/orderSlide';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useMemo, useState } from 'react';
-import { convertPrice } from '~/ultil';
-import Button from '~/components/Button';
-import * as messages from '~/components/Message';
+import { convertPrice } from '../../ultil';
+import Button from '../../components/Button';
+import * as messages from '../../components/Message';
 import ModalComponent from '../Admin/ComponentAdmin/ModalComponent';
 import { Form } from 'antd';
-import { useMutationHooks } from '~/hooks/useMutationHook';
-import * as UserService from '~/service/UserService';
-import Loading from '~/components/LoadingComponent';
-import { updateUser } from '~/redux/slides/userSlide';
-import StepComponet from '~/components/StepComponent';
+import { useMutationHooks } from '../../hooks/useMutationHook';
+import * as UserService from '../../service/UserService';
+import Loading from '../../components/LoadingComponent';
+import { updateUser } from '../../redux/slides/userSlide';
+import StepComponet from '../../components/StepComponent';
 
 const cx = classNames.bind(styles);
 
@@ -38,17 +38,17 @@ function Cart() {
         city: '',
     });
 
-    // Cập nhật selectedOrder vào Redux mỗi khi listChecked thay đổi
-    useEffect(() => {
-        dispatch(selectedOrder({ listChecked }));
-    }, [listChecked, dispatch]);
-
     useEffect(() => {
         if (!user.access_token) {
             messages.warning('Vui lòng đăng nhập để xem giỏ hàng');
             navigate('/login');
         }
     }, [user, navigate]);
+
+    // Cập nhật danh sách sản phẩm được chọn vào Redux mỗi khi listChecked thay đổi
+    useEffect(() => {
+        dispatch(selectedOrder({ listChecked }));
+    }, [listChecked, dispatch]);
 
     useEffect(() => {
         form.setFieldsValue(stateUserDetail);
@@ -72,81 +72,52 @@ function Cart() {
         });
     };
 
-    // --- SỬA LOGIC CHECKBOX TỪNG ITEM ---
-    // Truyền trực tiếp idProduct vào hàm, không lấy qua e.target.value để tránh lỗi
-    const handleOnChangeCheck = (e, idProduct) => {
-        if (e.target.checked) {
-            setListChecked([...listChecked, idProduct]);
+    const handleOnChangeCheck = (index) => {
+        // Sử dụng index làm định danh
+        if (listChecked.includes(index)) {
+            setListChecked(listChecked.filter((item) => item !== index));
         } else {
-            setListChecked(listChecked.filter((item) => item !== idProduct));
+            setListChecked([...listChecked, index]);
         }
     };
 
-    // --- SỬA LOGIC CHECK ALL ---
     const handleCheckAll = (e) => {
         if (e.target.checked) {
-            // Chỉ chọn những sản phẩm CÒN HÀNG (countInStock > 0)
-            const newListChecked = [];
-            order?.orderItems?.forEach((item) => {
-                if (item.countInStock > 0) {
-                    newListChecked.push(item.product);
-                }
-            });
-            setListChecked(newListChecked);
+            const allItemIndices = order?.orderItems?.map((_, index) => index).filter((index) => order.orderItems[index].countInStock > 0) || [];
+            setListChecked(allItemIndices);
         } else {
             setListChecked([]);
         }
     };
 
-    // --- SỬA LOGIC THAY ĐỔI SỐ LƯỢNG ---
-    const handleChangeCount = (type, idProduct, countInStock) => {
-        const item = order?.orderItems.find((i) => i.product === idProduct);
+    const handleChangeCount = (type, index) => {
+        const item = order.orderItems[index];
         if (!item) return;
+        const { amount, countInStock } = item;
 
         if (type === 'increase') {
-            if (item.amount < countInStock) {
-                dispatch(increaseAmount({ idProduct }));
-            } else {
-                messages.warning(`Chỉ còn lại ${countInStock} sản phẩm`);
+            if (amount < countInStock) {
+                dispatch(increaseAmount({ index: item.index }));
             }
         } else if (type === 'decrease') {
-            if (item.amount > 1) {
-                dispatch(decreaseAmount({ idProduct }));
+            if (amount > 1) {
+                dispatch(decreaseAmount({ index: item.index }));
             }
         }
     };
 
-    // Input thay đổi số lượng
-    const handleOnChangeAmount = (value, idProduct, countInStock) => {
-        let newAmount = Number(value);
-        if (!newAmount || newAmount < 1) newAmount = 1; // Mặc định là 1 nếu xóa trắng hoặc nhập 0
-
-        if (newAmount > countInStock) {
-            messages.warning(`Không thể mua quá số lượng tồn kho (${countInStock})`);
-            newAmount = countInStock; // Reset về max
-        }
-
-        // Logic sync với Redux (bạn có thể thay bằng action updateAmount trực tiếp nếu có)
-        const item = order?.orderItems?.find((item) => item.product === idProduct);
-        if (item) {
-            const diff = newAmount - item.amount;
-            if (diff > 0) {
-                for (let i = 0; i < diff; i++) dispatch(increaseAmount({ idProduct }));
-            } else if (diff < 0) {
-                for (let i = 0; i < Math.abs(diff); i++) dispatch(decreaseAmount({ idProduct }));
-            }
-        }
-    };
-
-    const handleDeleteOrder = (idProduct) => {
-        dispatch(removeOrderProduct({ idProduct }));
+    // Logic Xóa 1 Item (Giữ nguyên)
+    const handleDeleteOrder = (index) => {
+        dispatch(removeOrderProduct({ index }));
         // Xóa khỏi listChecked nếu đang chọn
-        setListChecked(listChecked.filter((item) => item !== idProduct));
+        setListChecked(listChecked.filter((item) => item !== index));
     };
 
+    // Logic Xóa Tất Cả Item Đã Chọn (Giữ nguyên)
     const handleDeleteAllOrder = () => {
         if (listChecked.length > 0) {
             dispatch(removeAllOrderProduct({ listChecked }));
+            // Reset lại danh sách đã chọn ở local state sau khi dispatch action
             setListChecked([]);
         }
     };
@@ -155,7 +126,7 @@ function Cart() {
     const priceMemo = useMemo(() => {
         const result = order?.orderItemSelected?.reduce((total, curr) => {
             const priceSale = curr.price - (curr.price * curr.discount) / 100;
-            return total + Math.trunc(priceSale) * curr.amount;
+            return total + Math.trunc(priceSale) * (curr.amount || 1);
         }, 0);
         return result;
     }, [order]);
@@ -192,8 +163,8 @@ function Cart() {
             return;
         }
 
-        // Check stock lần cuối
-        const invalidItems = order?.orderItemSelected?.filter((item) => item.amount > item.countInStock || item.countInStock === 0);
+        // Check stock lần cuối (Sử dụng itemsChecked đã tính toán)
+        const invalidItems = order.orderItemSelected.filter((item) => item.amount > item.countInStock || item.countInStock === 0);
         if (invalidItems?.length > 0) {
             const nameInvalid = invalidItems.map((i) => i.name).join(', ');
             messages.error(`Sản phẩm ${nameInvalid} đã hết hàng hoặc không đủ số lượng!`);
@@ -233,8 +204,15 @@ function Cart() {
     ];
 
     // Lọc ra các item còn hàng để tính toán việc "Chọn tất cả" có được check hay không
-    const inStockItems = order?.orderItems?.filter((item) => item.countInStock > 0) || [];
-    const isCheckAll = inStockItems.length > 0 && inStockItems.every((item) => listChecked.includes(item.product));
+    const inStockItemIndices = useMemo(
+        () =>
+            order?.orderItems
+                ?.map((item, index) => ({ ...item, index }))
+                .filter((item) => item.countInStock > 0)
+                .map((item) => item.index) || [],
+        [order?.orderItems],
+    );
+    const isCheckAll = useMemo(() => inStockItemIndices.length > 0 && listChecked.length === inStockItemIndices.length, [listChecked, inStockItemIndices]);
 
     return (
         <div className={cx('wrapper')}>
@@ -251,18 +229,23 @@ function Cart() {
                 <div className={cx('container')}>
                     {/* Header Giỏ hàng */}
                     <div className={cx('check-all')}>
-                        <CustomCheckbox className={cx('checkbox-all')} onChange={handleCheckAll} checked={isCheckAll} />
-                        <span className={cx('text-all')}>Chọn tất cả ({inStockItems.length} sản phẩm còn hàng)</span>
+                        <CustomCheckbox
+                            className={cx('checkbox-all')}
+                            onChange={handleCheckAll}
+                            checked={isCheckAll}
+                            disabled={inStockItemIndices.length === 0}
+                            title="Chọn tất cả sản phẩm còn hàng"
+                        />
+                        <span className={cx('text-all')}>Chọn tất cả ({inStockItemIndices.length} sản phẩm còn hàng)</span>
                         <div className={cx('title-amount')}>Số lượng</div>
                         <div className={cx('title-buy')}>Thành tiền</div>
-                        <div className={cx('delete-cart-all')}>
-                            <MdDeleteForever onClick={handleDeleteAllOrder} style={{ cursor: 'pointer' }} />
-                        </div>
+                        <MdDeleteForever className={cx('delete-cart-all')} onClick={handleDeleteAllOrder} style={{ cursor: 'pointer' }} title="Xóa các sản phẩm đã chọn" />
                     </div>
 
                     {/* Danh sách sản phẩm */}
                     <div className={cx('content')}>
-                        {order?.orderItems?.map((item) => {
+                        {order?.orderItems?.map((item, index) => {
+                            // index ở đây là index thật trong mảng
                             const priceSale = Math.trunc(item.price - (item.price * item.discount) / 100);
                             const isOOS = item.countInStock === 0; // Out of stock
 
@@ -270,14 +253,10 @@ function Cart() {
                             const currentAmount = item.amount ? item.amount : 1;
 
                             return (
-                                <div key={item.product} className={cx('product-cart')}>
+                                <div key={index} className={cx('product-cart')}>
                                     <div className={cx('checkbox-all-width')}>
-                                        {!isOOS ? (
-                                            <CustomCheckbox
-                                                className={cx('checkbox-all')}
-                                                onChange={(e) => handleOnChangeCheck(e, item.product)}
-                                                checked={listChecked.includes(item.product)}
-                                            />
+                                        {!isOOS ? ( // Chỉ cho phép check nếu còn hàng
+                                            <CustomCheckbox className={cx('checkbox-item')} onChange={() => handleOnChangeCheck(index)} checked={listChecked.includes(index)} />
                                         ) : (
                                             <CiWarning style={{ color: 'red', fontSize: '20px' }} title="Hết hàng" />
                                         )}
@@ -302,20 +281,12 @@ function Cart() {
                                                     <button
                                                         className={cx('btn-less')}
                                                         style={{ border: 'none', background: 'transparent', cursor: currentAmount === 1 ? 'not-allowed' : 'pointer' }}
-                                                        onClick={() => handleChangeCount('decrease', item.product, item.countInStock)}
+                                                        onClick={() => handleChangeCount('decrease', { index, amount: currentAmount, countInStock: item.countInStock })}
                                                     >
                                                         <FaMinus />
                                                     </button>
 
-                                                    {/* INPUT SỐ LƯỢNG: Fix lỗi không hiện số */}
-                                                    <WrapperInputNumber
-                                                        min={1}
-                                                        max={item.countInStock}
-                                                        defaultValue={1}
-                                                        value={currentAmount}
-                                                        className={cx('input-amount')}
-                                                        onChange={(val) => handleOnChangeAmount(val, item.product, item.countInStock)}
-                                                    />
+                                                    <WrapperInputNumber readOnly min={1} max={item.countInStock} value={currentAmount} className={cx('input-amount')} />
 
                                                     <button
                                                         className={cx('btn-more')}
@@ -324,7 +295,7 @@ function Cart() {
                                                             background: 'transparent',
                                                             cursor: currentAmount >= item.countInStock ? 'not-allowed' : 'pointer',
                                                         }}
-                                                        onClick={() => handleChangeCount('increase', item.product, item.countInStock)}
+                                                        onClick={() => handleChangeCount('increase', { index, amount: currentAmount, countInStock: item.countInStock })}
                                                     >
                                                         <FaPlus />
                                                     </button>
@@ -335,7 +306,12 @@ function Cart() {
                                         <div className={cx('total-price')}>{convertPrice(priceSale * currentAmount)}</div>
 
                                         <div className={cx('delete-cart')}>
-                                            <MdDeleteForever onClick={() => handleDeleteOrder(item.product)} style={{ cursor: 'pointer' }} />
+                                            <MdDeleteForever
+                                                onClick={() => handleDeleteOrder(index)}
+                                                className={cx('delete-icon')}
+                                                title="Xóa sản phẩm"
+                                                style={{ cursor: 'pointer' }}
+                                            />
                                         </div>
                                     </div>
                                 </div>

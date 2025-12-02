@@ -34,45 +34,64 @@ export const orderSlide = createSlice({
             }
         },
         increaseAmount: (state, action) => {
-            const { idProduct } = action.payload;
-
-            const itemOrder = state?.orderItems?.find((item) => item?.product === idProduct);
-            const itemOrderSelected = state?.orderItemSelected?.find((item) => item?.product === idProduct);
-            itemOrder.amount++;
-            if (itemOrderSelected) {
-                itemOrderSelected.amount++;
+            const { index } = action.payload;
+            const itemToUpdate = state.orderItems[index];
+            if (itemToUpdate) {
+                itemToUpdate.amount++;
+                // Cập nhật luôn trong orderItemSelected nếu có
+                const selectedItem = state.orderItemSelected.find((item) => item.product === itemToUpdate.product);
+                if (selectedItem) {
+                    selectedItem.amount++;
+                }
             }
         },
         decreaseAmount: (state, action) => {
-            const { idProduct } = action.payload;
-            const itemOrder = state?.orderItems?.find((item) => item?.product === idProduct);
-            const itemOrderSelected = state?.orderItemSelected?.find((item) => item?.product === idProduct);
-            itemOrder.amount--;
-            if (itemOrderSelected) {
-                itemOrderSelected.amount--;
+            const { index } = action.payload;
+            const itemToUpdate = state.orderItems[index];
+            if (itemToUpdate && itemToUpdate.amount > 1) {
+                itemToUpdate.amount--;
+                // Cập nhật luôn trong orderItemSelected nếu có
+                const selectedItem = state.orderItemSelected.find((item) => item.product === itemToUpdate.product);
+                if (selectedItem) {
+                    selectedItem.amount--;
+                }
             }
         },
         removeOrderProduct: (state, action) => {
-            const { id } = action.payload;
+            const { index: indexToRemove } = action.payload;
+            console.log('--- Redux: removeOrderProduct ---');
+            console.log('Payload (index to remove):', indexToRemove);
+            console.log('State BEFORE removal:', JSON.parse(JSON.stringify(state.orderItems)));
 
-            const itemOrder = state?.orderItems?.filter((item) => item?.product !== id);
-            const itemOrderSelected = state?.orderItemSelected?.filter((item) => item?.product !== id);
-            state.orderItems = itemOrder;
-            state.orderItemSelected = itemOrderSelected;
+            if (typeof indexToRemove === 'number' && indexToRemove >= 0 && indexToRemove < state.orderItems.length) {
+                state.orderItems.splice(indexToRemove, 1);
+                console.log('Item at index', indexToRemove, 'has been removed.');
+            } else {
+                console.error('Invalid index provided to removeOrderProduct:', indexToRemove);
+            }
+            console.log('State AFTER removal:', JSON.parse(JSON.stringify(state.orderItems)));
+            console.log('---------------------------------');
         },
         removeAllOrderProduct: (state, action) => {
-            const { listChecked } = action.payload;
-            const itemOrder = state?.orderItems?.filter((item) => !listChecked.includes(item.product));
-            const itemOrderSelected = state?.orderItemSelected?.filter((item) => !listChecked.includes(item.product));
-            state.orderItemSelected = itemOrderSelected;
-            state.orderItems = itemOrder;
+            const { listRemovedProductIds } = action.payload;
+
+            // console.log('--- Redux: removeAllOrderProduct ---');
+            // console.log('Product IDs to remove:', listRemovedProductIds);
+            // console.log('State BEFORE removal:', JSON.parse(JSON.stringify(state.orderItems)));
+
+            // Lọc ra những sản phẩm không có trong danh sách cần xóa
+            state.orderItems = state.orderItems.filter((item) => !listRemovedProductIds.includes(item.story));
+            // Reset lại danh sách sản phẩm đã chọn
+            state.orderItemSelected = [];
+            // console.log('State AFTER removal:', JSON.parse(JSON.stringify(state.orderItems)));
+            // console.log('------------------------------------');
         },
         selectedOrder: (state, action) => {
             const { listChecked } = action.payload;
             const orderSelected = [];
-            state.orderItems.forEach((order) => {
-                if (listChecked.includes(order.product)) {
-                    orderSelected.push(order);
+            state.orderItems.forEach((item, index) => {
+                if (listChecked.includes(index)) {
+                    orderSelected.push(item);
                 }
             });
             state.orderItemSelected = orderSelected;
