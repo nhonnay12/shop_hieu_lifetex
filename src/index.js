@@ -23,7 +23,7 @@ ReactDOM.render(
                 </PersistGate>
             </Provider>
         </GlobalStyles>
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>,
     document.getElementById('root'), // Sử dụng 'render' với React 17
 );

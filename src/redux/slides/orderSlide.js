@@ -35,6 +35,7 @@ export const orderSlide = createSlice({
         },
         increaseAmount: (state, action) => {
             const { index } = action.payload;
+
             const itemToUpdate = state.orderItems[index];
             if (itemToUpdate) {
                 itemToUpdate.amount++;

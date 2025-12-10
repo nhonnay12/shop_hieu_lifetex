@@ -92,16 +92,23 @@ function Cart() {
 
     const handleChangeCount = (type, index) => {
         const item = order.orderItems[index];
-        if (!item) return;
+        console.log('item', item);
+        if (!item) {
+            console.error('Không tìm thấy item tại index:', index);
+            return;
+        }
+
         const { amount, countInStock } = item;
 
         if (type === 'increase') {
             if (amount < countInStock) {
-                dispatch(increaseAmount({ index: item.index }));
+                // Bạn đang dispatch { index: item.index }
+                dispatch(increaseAmount({ index: index }));
             }
         } else if (type === 'decrease') {
             if (amount > 1) {
-                dispatch(decreaseAmount({ index: item.index }));
+                // Bạn đang dispatch { index: item.index }
+                dispatch(decreaseAmount({ index: index }));
             }
         }
     };
@@ -281,7 +288,7 @@ function Cart() {
                                                     <button
                                                         className={cx('btn-less')}
                                                         style={{ border: 'none', background: 'transparent', cursor: currentAmount === 1 ? 'not-allowed' : 'pointer' }}
-                                                        onClick={() => handleChangeCount('decrease', { index, amount: currentAmount, countInStock: item.countInStock })}
+                                                        onClick={() => handleChangeCount('decrease', index)}
                                                     >
                                                         <FaMinus />
                                                     </button>
@@ -295,7 +302,7 @@ function Cart() {
                                                             background: 'transparent',
                                                             cursor: currentAmount >= item.countInStock ? 'not-allowed' : 'pointer',
                                                         }}
-                                                        onClick={() => handleChangeCount('increase', { index, amount: currentAmount, countInStock: item.countInStock })}
+                                                        onClick={() => handleChangeCount('increase', index)}
                                                     >
                                                         <FaPlus />
                                                     </button>
