@@ -163,7 +163,7 @@ function CheckoutPage() {
 
         const script = document.createElement('script');
         script.type = 'text/javascript';
-        script.src = `https://www.paypal.com/sdk/js?client-id=${data}`;
+        script.src = `https://www.paypal.com/sdk/js?client-id=${data}&disable-funding=card`;
         script.async = true;
 
         script.onload = () => {
@@ -267,7 +267,7 @@ function CheckoutPage() {
                     </div>
 
                     <div className={cx('option')}>
-                        <span className={cx('option-back')}>
+                        <span className={cx('option-back')} onClick={() => navigate('/cart')}>
                             <AiFillBackward className={cx('back-icon')} />
                             Quay về giỏ hàng
                         </span>

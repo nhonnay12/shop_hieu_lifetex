@@ -44,17 +44,17 @@ function TableComponent(props) {
             label: <div onClick={hanleDeleteAll}>Xóa tất cả</div>,
             key: '0',
         },
-        {
-            label: <div>2nd menu item</div>,
-            key: '1',
-        },
+        // {
+        //     label: <div>2nd menu item</div>,
+        //     key: '1',
+        // },
         {
             type: 'divider',
         },
-        {
-            label: '3rd menu item',
-            key: '3',
-        },
+        // {
+        //     label: '3rd menu item',
+        //     key: '3',
+        // },
     ];
     return (
         <div>
