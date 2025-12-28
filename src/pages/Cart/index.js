@@ -39,7 +39,8 @@ function Cart() {
     });
 
     useEffect(() => {
-        if (!user.access_token) {
+        const accessToken = localStorage.getItem('access_token');
+        if (!accessToken) {
             messages.warning('Vui lòng đăng nhập để xem giỏ hàng');
             navigate('/login');
         }

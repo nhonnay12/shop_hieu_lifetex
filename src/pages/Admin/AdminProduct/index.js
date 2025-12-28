@@ -76,6 +76,20 @@ function AdminProduct() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSuccess, isError]);
 
+    useEffect(() => {
+        const price = parseFloat(stateProduct.price);
+        const discount = parseFloat(stateProduct.discount);
+        let salePrice = '';
+        if (!isNaN(price) && !isNaN(discount)) {
+            salePrice = price - (price * discount) / 100;
+        }
+
+        if (salePrice !== stateProduct.pricesale) {
+            setStateProduct((prev) => ({ ...prev, pricesale: salePrice }));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [stateProduct.price, stateProduct.discount]);
+
     const handleCancel = () => {
         setIsModalOpen(false);
         setStateProduct({
@@ -254,6 +268,20 @@ function AdminProduct() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSuccessUpdated, isErrorUpdated]);
+
+    useEffect(() => {
+        const price = parseFloat(stateProductDetail.price);
+        const discount = parseFloat(stateProductDetail.discount);
+        let salePrice = '';
+        if (!isNaN(price) && !isNaN(discount)) {
+            salePrice = price - (price * discount) / 100;
+        }
+
+        if (salePrice !== stateProductDetail.pricesale) {
+            setStateProductDetail((prev) => ({ ...prev, pricesale: salePrice }));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [stateProductDetail.price, stateProductDetail.discount]);
 
     const handleOnUpdate = () => {
         mutationUpdate.mutate(
@@ -617,12 +645,12 @@ function AdminProduct() {
                             <div className={cx('form-input')}>
                                 <input
                                     value={stateProduct.pricesale}
-                                    onChange={handleOnChange}
                                     name="pricesale"
                                     type="number"
-                                    placeholder="Nhập giá giảm"
+                                    placeholder="Tự động tính"
                                     className={cx('form-control')}
                                     id="pricesale"
+                                    disabled
                                 />
                             </div>
                         </div>
@@ -796,12 +824,12 @@ function AdminProduct() {
                             <div className={cx('form-input')}>
                                 <input
                                     value={stateProductDetail.pricesale}
-                                    onChange={handleOnChangeDetail}
                                     name="pricesale"
                                     type="number"
-                                    placeholder="Nhập giá giảm"
+                                    placeholder="Tự động tính"
                                     className={cx('form-control')}
                                     id="pricesale"
+                                    disabled
                                 />
                             </div>
                         </div>
