@@ -6,9 +6,9 @@ import { FaMinus, FaPlus } from 'react-icons/fa';
 import { MdDeleteForever, MdNavigateNext } from 'react-icons/md';
 import { TbTicket } from 'react-icons/tb';
 import { CiWarning } from 'react-icons/ci';
-import { decreaseAmount, increaseAmount, removeAllOrderProduct, removeOrderProduct, selectedOrder } from '../../redux/slides/orderSlide';
+import { decreaseAmount, increaseAmount, removeAllOrderProduct, removeOrderProduct, selectedOrder, updateProductDetails } from '../../redux/slides/orderSlide.js';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import { convertPrice } from '../../ultil';
 import Button from '../../components/Button';
 import * as messages from '../../components/Message';
@@ -16,15 +16,18 @@ import ModalComponent from '../Admin/ComponentAdmin/ModalComponent';
 import { Form } from 'antd';
 import { useMutationHooks } from '../../hooks/useMutationHook';
 import * as UserService from '../../service/UserService';
+import * as ProductService from '../../service/ProductService';
 import Loading from '../../components/LoadingComponent';
 import { updateUser } from '../../redux/slides/userSlide';
 import StepComponet from '../../components/StepComponent';
+import { useQuery } from 'react-query';
 
 const cx = classNames.bind(styles);
 
 function Cart() {
     const order = useSelector((state) => state?.order);
     const user = useSelector((state) => state.user);
+    const persist = useSelector((state) => state._persist);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -39,17 +42,47 @@ function Cart() {
     });
 
     useEffect(() => {
-        const accessToken = localStorage.getItem('access_token');
-        if (!accessToken) {
+        const access_token = localStorage.getItem('access_token');
+        if (!access_token) {
             messages.warning('Vui lòng đăng nhập để xem giỏ hàng');
             navigate('/login');
         }
-    }, [user, navigate]);
+    }, [navigate]);
 
     // Cập nhật danh sách sản phẩm được chọn vào Redux mỗi khi listChecked thay đổi
     useEffect(() => {
         dispatch(selectedOrder({ listChecked }));
     }, [listChecked, dispatch]);
+
+    // --- START: LOGIC TỰ ĐỘNG CẬP NHẬT TỒN KHO ---
+    // 1. Lấy danh sách ID sản phẩm từ giỏ hàng trong Redux
+    const productIdsInCart = useMemo(() => {
+        return order?.orderItems?.map((item) => item.story) || []; // Giả định 'story' là ID sản phẩm
+    }, [order?.orderItems]);
+
+    // 2. Dùng React Query để tự động gọi API lấy thông tin sản phẩm mới nhất
+    const { data: freshProductDetails } = useQuery(
+        ['products-in-cart', productIdsInCart], // Key của query
+        async () => {
+            if (productIdsInCart.length > 0) {
+                const res = await ProductService.getProductsByIds({ ids: productIdsInCart });
+                return res.data;
+            }
+            return [];
+        },
+        {
+            enabled: productIdsInCart.length > 0, // Chỉ chạy query khi có sản phẩm trong giỏ
+            refetchOnWindowFocus: true, // Tự động gọi lại API khi focus vào cửa sổ -> Dữ liệu luôn mới!
+        },
+    );
+
+    // 3. Cập nhật vào Redux store khi có dữ liệu mới từ API
+    useEffect(() => {
+        if (freshProductDetails) {
+            dispatch(updateProductDetails({ products: freshProductDetails }));
+        }
+    }, [freshProductDetails, dispatch]);
+    // --- END: LOGIC TỰ ĐỘNG CẬP NHẬT TỒN KHO ---
 
     useEffect(() => {
         form.setFieldsValue(stateUserDetail);
@@ -147,25 +180,8 @@ function Cart() {
 
     const totalSale = priceMemo - diliveryPriceMemo;
 
-    // --- UPDATE USER ---
-    const mutationUpdate = useMutationHooks((data) => {
-        const { id, token, ...rest } = data;
-        return UserService.updateUser(id, { ...rest }, token);
-    });
-
-    const { isLoading, data, isSuccess, isError } = mutationUpdate;
-
-    useEffect(() => {
-        if (isSuccess && data?.status !== 'ERR') {
-            messages.success('Cập nhật thông tin thành công');
-            handleAddCart(); // Gọi lại thanh toán sau khi update xong
-        } else if (isError) {
-            messages.error('Cập nhật thất bại');
-        }
-    }, [isSuccess, isError]);
-
     // --- THANH TOÁN ---
-    const handleAddCart = () => {
+    const handleAddCart = useCallback(() => {
         if (!listChecked.length) {
             messages.error('Vui lòng chọn sản phẩm cần mua');
             return;
@@ -184,7 +200,24 @@ function Cart() {
         } else {
             navigate('/checkout');
         }
-    };
+    }, [listChecked, order, user, navigate]);
+
+    // --- UPDATE USER ---
+    const mutationUpdate = useMutationHooks((data) => {
+        const { id, token, ...rest } = data;
+        return UserService.updateUser(id, { ...rest }, token);
+    });
+
+    const { isLoading, data, isSuccess, isError } = mutationUpdate;
+
+    useEffect(() => {
+        if (isSuccess && data?.status !== 'ERR') {
+            messages.success('Cập nhật thông tin thành công');
+            handleAddCart(); // Gọi lại thanh toán sau khi update xong
+        } else if (isError) {
+            messages.error('Cập nhật thất bại');
+        }
+    }, [isSuccess, isError, data, handleAddCart]);
 
     const handleCancelUpdate = () => {
         setIsModalOpenUpdateInfo(false);

@@ -20,6 +20,9 @@ function AdminInventory() {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [modalType, setModalType] = useState(''); // 'stock-in' or 'stock-out'
     const [quantity, setQuantity] = useState(1);
+    const [page, setPage] = useState(1);
+    const [limit] = useState(10);
+    const [totalProducts, setTotalProducts] = useState(0);
 
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [isBulkModalOpen, setIsBulkModalOpen] = useState(false);
@@ -28,16 +31,16 @@ function AdminInventory() {
     const [bulkForm] = Form.useForm();
 
     // fetch và chuẩn hoá dữ liệu ngay ở đây
-    const fetchProducts = async () => {
-        const res = await ProductService.getAllProducts();
-        // Nếu service trả về axios response: res.data
-        // Nếu service trả về payload như { data: [...]}: res.data || res
-        // Thử cân nhắc res?.data ?? res
-        return res?.data ?? res;
+    const fetchProducts = async (context) => {
+        const [_, page, limit] = context.queryKey;
+        const res = await ProductService.getAllProducts(null, page, limit);
+        return res;
     };
 
-    const queryProduct = useQuery(['products'], fetchProducts, {
-        // optional: retry: false, staleTime...
+    const queryProduct = useQuery(['products-inventory', page, limit], fetchProducts, {
+        onSuccess: (data) => {
+            setTotalProducts(data?.pagination?.totalStories ?? 0);
+        },
     });
 
     const { isLoading: isLoadingProducts, data: productsRaw } = queryProduct;
@@ -48,13 +51,7 @@ function AdminInventory() {
     }, [productsRaw]);
 
     // Chuẩn hoá thành mảng product
-    const productsArray = Array.isArray(productsRaw)
-        ? productsRaw
-        : Array.isArray(productsRaw?.data)
-        ? productsRaw.data
-        : Array.isArray(productsRaw?.stories)
-        ? productsRaw.stories
-        : [];
+    const productsArray = productsRaw?.stories ?? [];
 
     const dataTable = productsArray.map((product) => ({
         ...product,
@@ -273,7 +270,18 @@ function AdminInventory() {
                     Xuất kho hàng loạt
                 </BTN>
             </Space>
-            <TableComponent columns={columns} isLoading={isLoadingProducts || isLoadingBulkUpdate} data={dataTable} rowSelection={rowSelection} />
+            <TableComponent
+                columns={columns}
+                isLoading={isLoadingProducts || isLoadingBulkUpdate}
+                data={dataTable}
+                rowSelection={rowSelection}
+                pagination={{
+                    current: page,
+                    pageSize: limit,
+                    total: totalProducts,
+                    onChange: (page) => setPage(page),
+                }}
+            />
             {/* Modal cho thao tác đơn lẻ */}
             <Modal title={modalTitle} open={isModalOpen} onOk={handleOk} onCancel={handleCancel} okText="Xác nhận" cancelText="Hủy">
                 {selectedProduct && (

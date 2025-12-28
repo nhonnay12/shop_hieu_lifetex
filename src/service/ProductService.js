@@ -56,3 +56,8 @@ export const getHotNews = async () => {
     const res = await axios.get(`http://localhost:5000/api/story/hotnews`);
     return res.data;
 };
+
+export const getProductsByIds = async (data) => {
+    const res = await axios.post(`http://localhost:5000/api/story/get-by-ids`, data);
+    return res.data;
+};

@@ -40,6 +40,7 @@ function AdminProduct() {
     const [stateProduct, setStateProduct] = useState(initial());
     const [page, setPage] = useState(1);
     const [limit] = useState(10);
+    const [totalProducts, setTotalProducts] = useState(0);
 
     //thêm dữ liệu vào Product bằng react query
     const mutation = useMutationHooks((data) => {
@@ -79,16 +80,22 @@ function AdminProduct() {
     useEffect(() => {
         const price = parseFloat(stateProduct.price);
         const discount = parseFloat(stateProduct.discount);
-        let salePrice = '';
-        if (!isNaN(price) && !isNaN(discount)) {
-            salePrice = price - (price * discount) / 100;
+
+        // Nếu giá hoặc % giảm giá không phải là số hợp lệ, xóa giá giảm.
+        if (isNaN(price) || isNaN(discount)) {
+            if (stateProduct.pricesale !== '') {
+                setStateProduct((prev) => ({ ...prev, pricesale: '' }));
+            }
+            return;
         }
 
-        if (salePrice !== stateProduct.pricesale) {
-            setStateProduct((prev) => ({ ...prev, pricesale: salePrice }));
+        const calculatedSalePrice = Math.trunc(price - (price * discount) / 100);
+
+        // Chỉ cập nhật state nếu giá trị tính toán khác giá trị hiện tại để tránh vòng lặp vô tận.
+        if (calculatedSalePrice !== stateProduct.pricesale) {
+            setStateProduct((prev) => ({ ...prev, pricesale: calculatedSalePrice }));
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [stateProduct.price, stateProduct.discount]);
+    }, [stateProduct.price, stateProduct.discount, stateProduct.pricesale]);
 
     const handleCancel = () => {
         setIsModalOpen(false);
@@ -151,21 +158,21 @@ function AdminProduct() {
     };
 
     //Get All Product
-    const getAllProduct = async () => {
+    const fetchAllProducts = async (context) => {
+        const [_, page, limit] = context.queryKey;
         try {
-            // Gọi API với page và limit được truyền chính xác
             const res = await ProductService.getAllProducts(null, page, limit);
-
-            // Kiểm tra res và cập nhật page nếu có pagination từ response
-            if (res?.pagination?.page) {
-                setPage(res.pagination.page);
-            }
-            return res.stories;
+            return res;
         } catch (error) {
             console.error('Error fetching stories: ', error);
         }
     };
-    const queryProduct = useQuery(['products'], getAllProduct);
+    const queryProduct = useQuery(['admin-products', page, limit], fetchAllProducts, {
+        retry: 3,
+        retryDelay: 1000,
+        keepPreviousData: true,
+        onSuccess: (data) => setTotalProducts(data?.pagination?.totalStories ?? 0),
+    });
 
     const { isLoading: isLoadingProduct, data: productsRaw } = queryProduct;
 
@@ -272,16 +279,21 @@ function AdminProduct() {
     useEffect(() => {
         const price = parseFloat(stateProductDetail.price);
         const discount = parseFloat(stateProductDetail.discount);
-        let salePrice = '';
-        if (!isNaN(price) && !isNaN(discount)) {
-            salePrice = price - (price * discount) / 100;
+
+        // Logic tương tự như form tạo mới
+        if (isNaN(price) || isNaN(discount)) {
+            if (stateProductDetail.pricesale !== '') {
+                setStateProductDetail((prev) => ({ ...prev, pricesale: '' }));
+            }
+            return;
         }
 
-        if (salePrice !== stateProductDetail.pricesale) {
-            setStateProductDetail((prev) => ({ ...prev, pricesale: salePrice }));
+        const calculatedSalePrice = Math.trunc(price - (price * discount) / 100);
+
+        if (calculatedSalePrice !== stateProductDetail.pricesale) {
+            setStateProductDetail((prev) => ({ ...prev, pricesale: calculatedSalePrice }));
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [stateProductDetail.price, stateProductDetail.discount]);
+    }, [stateProductDetail.price, stateProductDetail.discount, stateProductDetail.pricesale]);
 
     const handleOnUpdate = () => {
         mutationUpdate.mutate(
@@ -514,23 +526,23 @@ function AdminProduct() {
     ];
 
     // Chuẩn hóa dữ liệu để đảm bảo products luôn là một mảng
-    const products = Array.isArray(productsRaw)
-        ? productsRaw
-        : Array.isArray(productsRaw?.data)
-        ? productsRaw.data
-        : Array.isArray(productsRaw?.stories)
-        ? productsRaw.stories
-        : [];
+    const products = productsRaw?.stories ?? [];
 
     const dataTable = products.map((product) => ({ ...product, key: product._id }));
     return (
         <div className={cx('wrapper')}>
-            <div>Quản lý người dùng</div>
+            <div>Quản lý sản phẩm</div>
             <But className={cx('btn-add')} onClick={() => setIsModalOpen(true)}>
                 <IoMdAddCircleOutline className={cx('icon-add')} />
             </But>
             <div>
                 <TableComponent
+                    pagination={{
+                        current: page,
+                        pageSize: limit,
+                        total: totalProducts,
+                        onChange: (page) => setPage(page),
+                    }}
                     handleDeleteMany={handleDeleteManyProduct}
                     columns={columns}
                     data={dataTable}
@@ -697,7 +709,7 @@ function AdminProduct() {
                                     value={stateProduct.discount}
                                     onChange={handleOnChange}
                                     name="discount"
-                                    type="text"
+                                    type="number"
                                     placeholder="Nhập phần trăm giảm giá"
                                     className={cx('form-control')}
                                     id="discount"
@@ -893,7 +905,7 @@ function AdminProduct() {
                                     value={stateProductDetail.discount}
                                     onChange={handleOnChangeDetail}
                                     name="discount"
-                                    type="text"
+                                    type="number"
                                     placeholder="Nhập phần trăm giảm"
                                     className={cx('form-control')}
                                     id="discount"

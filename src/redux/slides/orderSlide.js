@@ -40,7 +40,7 @@ export const orderSlide = createSlice({
             if (itemToUpdate) {
                 itemToUpdate.amount++;
                 // Cập nhật luôn trong orderItemSelected nếu có
-                const selectedItem = state.orderItemSelected.find((item) => item.product === itemToUpdate.product);
+                const selectedItem = state.orderItemSelected.find((item) => item.story === itemToUpdate.story);
                 if (selectedItem) {
                     selectedItem.amount++;
                 }
@@ -52,7 +52,7 @@ export const orderSlide = createSlice({
             if (itemToUpdate && itemToUpdate.amount > 1) {
                 itemToUpdate.amount--;
                 // Cập nhật luôn trong orderItemSelected nếu có
-                const selectedItem = state.orderItemSelected.find((item) => item.product === itemToUpdate.product);
+                const selectedItem = state.orderItemSelected.find((item) => item.story === itemToUpdate.story);
                 if (selectedItem) {
                     selectedItem.amount--;
                 }
@@ -97,10 +97,32 @@ export const orderSlide = createSlice({
             });
             state.orderItemSelected = orderSelected;
         },
+        updateProductDetails: (state, action) => {
+            const { products } = action.payload;
+            if (!products) return;
+
+            // Tạo một map để tra cứu sản phẩm mới cho hiệu quả
+            const productMap = new Map(products.map((p) => [p._id, p]));
+
+            // Hàm trợ giúp để cập nhật chi tiết một item
+            const updateItemDetails = (item) => {
+                const freshProduct = productMap.get(item.story); // Giả định 'story' chứa ID sản phẩm
+                if (freshProduct) {
+                    // Chỉ cập nhật các trường dữ liệu từ server, giữ nguyên số lượng người dùng đã chọn
+                    item.countInStock = freshProduct.countInStock;
+                    item.price = freshProduct.price;
+                    item.discount = freshProduct.discount;
+                }
+            };
+
+            // Cập nhật cho cả hai danh sách trong state
+            state.orderItems.forEach(updateItemDetails);
+            state.orderItemSelected.forEach(updateItemDetails);
+        },
     },
 });
 
 // Action creators are generated for each case reducer function
-export const { addOrderProduct, removeOrderProduct, removeAllOrderProduct, increaseAmount, decreaseAmount, selectedOrder } = orderSlide.actions;
+export const { addOrderProduct, removeOrderProduct, removeAllOrderProduct, increaseAmount, decreaseAmount, selectedOrder, updateProductDetails } = orderSlide.actions;
 
 export default orderSlide.reducer;
